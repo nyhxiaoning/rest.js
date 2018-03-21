@@ -1814,7 +1814,7 @@
       "description": "List repositories that are accessible to the authenticated installation. (In preview period. See README.)"
     },
     "addRepoToInstallation": {
-      "url": "/installations/:installation_id/repositories/:repository_id",
+      "url": "/user/installations/:installation_id/repositories/:repository_id",
       "method": "PUT",
       "headers": {
         "accept": "application/vnd.github.machine-man-preview"
@@ -1832,7 +1832,7 @@
       "description": "Add a single repository to an installation. (In preview period. See README.)"
     },
     "removeRepoFromInstallation": {
-      "url": "/installations/:installation_id/repositories/:repository_id",
+      "url": "/user/installations/:installation_id/repositories/:repository_id",
       "method": "DELETE",
       "headers": {
         "accept": "application/vnd.github.machine-man-preview"
@@ -2655,7 +2655,7 @@
       "description": "Delete a comment"
     },
     "getEvents": {
-      "url": "/repos/:owner/:repo/issues/:issue_number/events",
+      "url": "/repos/:owner/:repo/issues/:number/events",
       "method": "GET",
       "params": {
         "owner": {
@@ -2667,6 +2667,12 @@
           "required": true
         },
         "issue_number": {
+          "type": "number",
+          "required": true,
+          "deprecated": "`issue_number` parameter has been renamed to `number`",
+          "alias": "number"
+        },
+        "number": {
           "type": "number",
           "required": true
         },
@@ -3133,7 +3139,7 @@
       "description": "Delete a milestone"
     },
     "getEventsTimeline": {
-      "url": "/repos/:owner/:repo/issues/:issue_number/timeline",
+      "url": "/repos/:owner/:repo/issues/:number/timeline",
       "method": "GET",
       "headers": {
         "accept": "application/vnd.github.mockingbird-preview"
@@ -3148,6 +3154,12 @@
           "required": true
         },
         "issue_number": {
+          "type": "number",
+          "required": true,
+          "deprecated": "`issue_number` parameter has been renamed to `number`",
+          "alias": "number"
+        },
+        "number": {
           "type": "number",
           "required": true
         },
@@ -10430,7 +10442,7 @@
       "description": "Get a single pre-receive environment. (In preview period. See README.)"
     },
     "getPreReceiveEnvironments": {
-      "url": "/admin/pre_receive_environments",
+      "url": "/admin/pre-receive-environments",
       "method": "GET",
       "headers": {
         "accept": "application/vnd.github.eye-scream-preview"
@@ -10439,7 +10451,7 @@
       "description": "List pre-receive environments. (In preview period. See README.)"
     },
     "createPreReceiveEnvironment": {
-      "url": "/admin/pre_receive_environments",
+      "url": "/admin/pre-receive-environments",
       "method": "POST",
       "headers": {
         "accept": "application/vnd.github.eye-scream-preview"
@@ -10459,7 +10471,7 @@
       "description": "Create a pre-receive environment. (In preview period. See README.)"
     },
     "editPreReceiveEnvironment": {
-      "url": "/admin/pre_receive_environments/:id",
+      "url": "/admin/pre-receive-environments/:id",
       "method": "PATCH",
       "params": {
         "id": {
@@ -10480,7 +10492,7 @@
       "description": "Create a pre-receive environment. (In preview period. See README.)"
     },
     "deletePreReceiveEnvironment": {
-      "url": "/admin/pre_receive_environments/:id",
+      "url": "/admin/pre-receive-environments/:id",
       "method": "DELETE",
       "params": {
         "id": {
@@ -10505,7 +10517,7 @@
       "description": "Get a pre-receive environment's download status. (In preview period. See README.)"
     },
     "triggerPreReceiveEnvironmentDownload": {
-      "url": "/admin/pre_receive_environments/:id/downloads",
+      "url": "/admin/pre-receive-environments/:id/downloads",
       "method": "POST",
       "headers": {
         "accept": "application/vnd.github.eye-scream-preview"
