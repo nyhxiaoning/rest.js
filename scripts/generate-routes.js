@@ -1,3 +1,6 @@
+const _ = require('lodash')
+const writeFileSync = require('fs').writeFileSync
+
 const NEW_ROUTES = require('@octokit/routes')
 const CURRENT_ROUTES = require('../lib/routes')
 const MISC_SCOPES = [
@@ -62,6 +65,7 @@ const mapScopes = {
 }
 
 const newRoutes = {}
+const newDocRoutes = {}
 Object.keys(NEW_ROUTES).forEach(scope => {
   const currentScopeName = mapScopes[scope]
 
@@ -72,6 +76,7 @@ Object.keys(NEW_ROUTES).forEach(scope => {
   NEW_ROUTES[currentScopeName] = NEW_ROUTES[scope]
 
   newRoutes[currentScopeName] = {}
+  newDocRoutes[currentScopeName] = {}
 })
 
 // don’t break the deprecated "integrations" scope
@@ -140,9 +145,10 @@ Object.keys(CURRENT_ROUTES).sort().forEach(scope => {
       throw new Error(`No endpoint found for ${currentEndpoint.method} ${currentEndpoint.url} (${JSON.stringify(currentEndpoint, null, 2)})`)
     }
 
-    currentEndpoint.params = newEndpoint.params.reduce((map, route) => {
-      map[route.name] = route
-      delete route.name
+    // reduce from params array to params object
+    currentEndpoint.params = newEndpoint.params.reduce((map, param) => {
+      map[param.name] = _.clone(param)
+      delete map[param.name].name
       return map
     }, {})
 
@@ -157,6 +163,7 @@ Object.keys(CURRENT_ROUTES).sort().forEach(scope => {
     })
 
     newRoutes[scope][methodName] = currentEndpoint
+    newDocRoutes[scope][methodName] = newEndpoint
   })
 })
 
@@ -169,4 +176,5 @@ Object.keys(CURRENT_ROUTES).sort().forEach(scope => {
 //   get(newRoutes, CHECK)
 // ))
 
-require('fs').writeFileSync('lib/routes.json', JSON.stringify(newRoutes, null, 2))
+writeFileSync('lib/routes.json', JSON.stringify(newRoutes, null, 2))
+writeFileSync('scripts/routes-for-api-docs.json', JSON.stringify(newDocRoutes, null, 2))

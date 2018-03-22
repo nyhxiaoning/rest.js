@@ -1118,7 +1118,15 @@
       "url": "/repos/:owner/:repo/git/commits/:sha",
       "method": "GET",
       "params": {
-        "undefined": {
+        "owner": {
+          "type": "string",
+          "required": true
+        },
+        "repo": {
+          "type": "string",
+          "required": true
+        },
+        "sha": {
           "type": "string",
           "required": true
         }
@@ -1260,7 +1268,15 @@
       "url": "/repos/:owner/:repo/git/tags/:sha",
       "method": "GET",
       "params": {
-        "undefined": {
+        "owner": {
+          "type": "string",
+          "required": true
+        },
+        "repo": {
+          "type": "string",
+          "required": true
+        },
+        "sha": {
           "type": "string",
           "required": true
         }
@@ -4386,7 +4402,30 @@
       "url": "/repos/:owner/:repo/pulls",
       "method": "POST",
       "params": {
-        "undefined": {
+        "owner": {
+          "type": "string",
+          "required": true
+        },
+        "repo": {
+          "type": "string",
+          "required": true
+        },
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "head": {
+          "type": "string",
+          "required": true
+        },
+        "base": {
+          "type": "string",
+          "required": true
+        },
+        "body": {
+          "type": "string"
+        },
+        "maintainer_can_modify": {
           "type": "boolean"
         }
       }
@@ -4795,7 +4834,31 @@
         "accept": "application/vnd.github.squirrel-girl-preview"
       },
       "params": {
-        "undefined": {
+        "owner": {
+          "type": "string",
+          "required": true
+        },
+        "repo": {
+          "type": "string",
+          "required": true
+        },
+        "number": {
+          "type": "number",
+          "required": true
+        },
+        "body": {
+          "type": "string",
+          "required": true
+        },
+        "commit_id": {
+          "type": "string",
+          "required": true
+        },
+        "path": {
+          "type": "string",
+          "required": true
+        },
+        "position": {
           "type": "integer",
           "required": true
         }
@@ -6805,7 +6868,34 @@
       "url": "/repos/:owner/:repo/contents/:path",
       "method": "PUT",
       "params": {
-        "undefined": {
+        "owner": {
+          "type": "string",
+          "required": true
+        },
+        "repo": {
+          "type": "string",
+          "required": true
+        },
+        "path": {
+          "type": "string",
+          "required": true
+        },
+        "message": {
+          "type": "string",
+          "required": true
+        },
+        "content": {
+          "type": "string",
+          "required": true
+        },
+        "branch": {
+          "type": "string",
+          "default": "the repository’s default branch (usually `master`)"
+        },
+        "committer": {
+          "type": "object"
+        },
+        "author": {
           "type": "object"
         }
       }
@@ -8784,7 +8874,11 @@
         "accept": "application/vnd.github.machine-man-preview"
       },
       "params": {
-        "undefined": {
+        "installation_id": {
+          "type": "string",
+          "required": true
+        },
+        "repository_id": {
           "type": "string",
           "required": true
         }
@@ -8797,7 +8891,11 @@
         "accept": "application/vnd.github.machine-man-preview"
       },
       "params": {
-        "undefined": {
+        "installation_id": {
+          "type": "string",
+          "required": true
+        },
+        "repository_id": {
           "type": "string",
           "required": true
         }
