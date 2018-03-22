@@ -69,11 +69,13 @@ Object.keys(NEW_ROUTES).forEach(scope => {
     return
   }
 
+  NEW_ROUTES[currentScopeName] = NEW_ROUTES[scope]
+
   newRoutes[currentScopeName] = {}
 })
 
 // don’t break the deprecated "integrations" scope
-newRoutes.integrations = newRoutes.apps.map(route => {
+NEW_ROUTES.integrations = NEW_ROUTES.apps.map(route => {
   return Object.assign({
     deprecated: '`integrations` has been renamed to `apps`'
   }, route)
@@ -81,7 +83,7 @@ newRoutes.integrations = newRoutes.apps.map(route => {
 
 // mutate the new routes to what we have today
 Object.keys(CURRENT_ROUTES).sort().forEach(scope => {
-  CURRENT_ROUTES[scope] = Object.keys(CURRENT_ROUTES[scope]).map(methodName => {
+  Object.keys(CURRENT_ROUTES[scope]).map(methodName => {
     const currentEndpoint = CURRENT_ROUTES[scope][methodName]
 
     if (currentEndpoint.method === 'GET' && currentEndpoint.url === '/repos/:owner/:repo/git/refs') {
@@ -104,7 +106,7 @@ Object.keys(CURRENT_ROUTES).sort().forEach(scope => {
       return
     }
 
-    const newEndpoint = NEW_ROUTES[scope].find(newEndpoint => {
+    const newEndpoint = NEW_ROUTES[mapScopes[scope] || scope].find(newEndpoint => {
       // project_id, card_id, column_id => just id
       if (/:project_id/.test(newEndpoint.path)) {
         newEndpoint.path = newEndpoint.path.replace(/:project_id/, ':id')
@@ -145,7 +147,14 @@ Object.keys(CURRENT_ROUTES).sort().forEach(scope => {
     }, {})
 
     currentEndpoint.url = newEndpoint.path
-    currentEndpoint.description = newEndpoint.description || newEndpoint.name
+    // we no longer need description, we can generate docs from @octokit/routes
+    delete currentEndpoint.description
+    Object.keys(currentEndpoint.params).forEach(name => {
+      delete currentEndpoint.params[name].description
+      if (currentEndpoint.params[name].required === false) {
+        delete currentEndpoint.params[name].required
+      }
+    })
 
     newRoutes[scope][methodName] = currentEndpoint
   })
